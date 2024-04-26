@@ -28,9 +28,11 @@ class Ad (models.Model):
         DRAFT = ('DF' , 'Draft')
         PUBLISHED = ('PB' , 'Published')
 
+    city = models.CharField(max_length = 50, default= 'Tehran')
     title = models.CharField(max_length = 250)
     owner = models.ForeignKey(User , on_delete = models.CASCADE , related_name = 'ads')
     description = models.TextField()
+    contact = models.CharField(max_length= 20 , blank= True)
     publish = models.DateTimeField(default = timezone.now)
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
