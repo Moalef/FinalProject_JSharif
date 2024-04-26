@@ -6,10 +6,10 @@ from ads.api.serializers import AdListSerializer, AdDetailSerializer
 
 
 class AdListView(generics.ListAPIView):
-    queryset = Ad.objects.all()
+    queryset = Ad.published.all()
     serializer_class = AdListSerializer
 
 class AdDetailView(generics.RetrieveAPIView):
-    queryset = Ad.objects.all()
+    queryset = Ad.published.all()
     serializer_class = AdDetailSerializer
     #permission_classes = [IsAuthenticated]

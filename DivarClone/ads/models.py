@@ -32,6 +32,7 @@ class Ad (models.Model):
     title = models.CharField(max_length = 250)
     owner = models.ForeignKey(User , on_delete = models.CASCADE , related_name = 'ads')
     description = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='ads' , null= True)
     contact = models.CharField(max_length= 20 , blank= True)
     publish = models.DateTimeField(default = timezone.now)
     created = models.DateTimeField(auto_now_add = True)

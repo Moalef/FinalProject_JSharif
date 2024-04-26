@@ -10,4 +10,4 @@ class AdListSerializer(serializers.ModelSerializer):
 class AdDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ad
-        fields = ['id', 'title', 'description']
+        fields = ['title', 'description' , 'contact']
