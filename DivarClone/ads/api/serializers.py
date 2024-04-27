@@ -10,12 +10,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class AdListSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
-    category_id = serializers.PrimaryKeyRelatedField(
-                                                    queryset=Category.objects.filter(parent__isnull=False),
-                                                    source='category', write_only=True)
+    
     class Meta:
         model = Ad
-        fields = [ 'title' , 'city', 'owner' , 'category' ,'description' , 'contact' , 'publish']
+        fields = [ 'title' , 'city', 'publish', 'category'] 
 
 
 class AdDetailSerializer(serializers.ModelSerializer):

@@ -9,7 +9,12 @@ from ads.api.serializers import AdListSerializer, AdDetailSerializer
 
 class AdListView(generics.ListCreateAPIView):
     queryset = Ad.published.all()
-    serializer_class = AdListSerializer
+    
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return AdDetailSerializer
+        return AdListSerializer
+
 
     def perform_create(self, serializer):
         category = get_object_or_404(Category, id=self.request.data.get('category'))
