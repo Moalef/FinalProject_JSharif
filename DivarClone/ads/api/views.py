@@ -1,15 +1,30 @@
+from django.forms import ValidationError
 from rest_framework import generics
-from ads.models import Ad
+from django.shortcuts import get_object_or_404
+from ads.models import Ad, Category
 from ads.api.serializers import AdListSerializer, AdDetailSerializer
 #from rest_framework.permissions import IsAuthenticated
 
 
 
-class AdListView(generics.ListAPIView):
+class AdListView(generics.ListCreateAPIView):
     queryset = Ad.published.all()
     serializer_class = AdListSerializer
 
-class AdDetailView(generics.RetrieveAPIView):
+    def perform_create(self, serializer):
+        category = get_object_or_404(Category, id=self.request.data.get('category'))
+        if category.subcategories.exists():
+            raise ValidationError('Ads cannot be posted in parent categories.')
+        serializer.save(owner=self.request.user)
+
+
+class AdDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ad.published.all()
     serializer_class = AdDetailSerializer
     #permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        ad = super().get_object()
+        if not self.request.user.is_authenticated:
+            ad.contact = 'Log in to See Contact Info.'
+        return ad
