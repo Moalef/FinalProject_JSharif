@@ -17,6 +17,12 @@ class AdListView(generics.ListCreateAPIView):
             raise ValidationError('Ads cannot be posted in parent categories.')
         serializer.save(owner=self.request.user)
 
+    def get_object(self):
+        ad = super().get_object()
+        if not self.request.user.is_authenticated:
+            ad.contact = 'Log in to See Contact Info.'
+        return ad
+
 
 class AdDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ad.published.all()
