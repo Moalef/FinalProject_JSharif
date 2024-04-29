@@ -20,7 +20,7 @@ class AdListView(generics.ListCreateAPIView):
         category = get_object_or_404(Category, id=self.request.data.get('category'))
         if category.subcategories.exists():
             raise ValidationError('Ads cannot be posted in parent categories.')
-        serializer.save(owner=self.request.user)
+        serializer.save(owner=self.request.data['owner'])
 
     def get_object(self):
         ad = super().get_object()

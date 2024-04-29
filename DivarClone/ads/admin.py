@@ -1,5 +1,4 @@
 from django.contrib import admin
-<<<<<<< HEAD
 from .models import Ad
 
 # Register your models here.
@@ -12,9 +11,4 @@ class AdAdmin(admin.ModelAdmin):
     #raw_id_fields = ['owner']
     date_hierarchy = 'publish'
     ordering = ['status' , 'publish']
-=======
-from .models import Ad, Category
-# Register your models here.
-admin.site.register(Ad)
-admin.site.register(Category)
->>>>>>> 36af7f61ffdcae1f28ee2c3a6cede69a7c8f7e72
+
