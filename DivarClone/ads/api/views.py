@@ -1,15 +1,20 @@
 from django.forms import ValidationError
-from rest_framework import generics
+from rest_framework import generics, filters
 from django.shortcuts import get_object_or_404
 from ads.models import Ad, Category
 from ads.api.serializers import AdListSerializer, AdDetailSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 #from rest_framework.permissions import IsAuthenticated
 
 
 
 class AdListView(generics.ListCreateAPIView):
     queryset = Ad.published.all()
-    
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['category','status']
+    search_fields = ['title']
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return AdDetailSerializer
