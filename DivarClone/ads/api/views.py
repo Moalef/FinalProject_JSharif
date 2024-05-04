@@ -20,7 +20,6 @@ class AdListView(generics.ListCreateAPIView):
         if self.request.method == 'POST':
             return AdDetailSerializer
         else:
-            print(self.request.user)
             return AdListSerializer
 
 
@@ -37,13 +36,28 @@ class AdListView(generics.ListCreateAPIView):
         return ad
 
 
-class AdDetailView(generics.RetrieveUpdateDestroyAPIView):
+class AdDetailView(generics.RetrieveAPIView):
     queryset = Ad.published.all()
     serializer_class = AdDetailSerializer
-    #permission_classes = [IsAuthenticated]
 
     def get_object(self):
         ad = super().get_object()
         if not self.request.user.is_authenticated:
             ad.contact = 'Log in to See Contact Info.'
         return ad
+    
+#see his/her advertisement LIST
+class AdInboxView(generics.ListAPIView):
+    serializer_class = AdListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Ad.objects.filter(owner=self.request.user)
+
+#see his/her advertisement detail and edit/delete them
+class AdInboxDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AdListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Ad.objects.filter(owner=self.request.user)
