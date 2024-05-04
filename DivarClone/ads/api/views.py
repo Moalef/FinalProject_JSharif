@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from ads.models import Ad, Category
 from ads.api.serializers import AdListSerializer, AdDetailSerializer
 from django_filters.rest_framework import DjangoFilterBackend
-#from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 
 
@@ -14,18 +14,21 @@ class AdListView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['category','status']
     search_fields = ['title']
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return AdDetailSerializer
-        return AdListSerializer
+        else:
+            print(self.request.user)
+            return AdListSerializer
 
 
     def perform_create(self, serializer):
         category = get_object_or_404(Category, id=self.request.data.get('category'))
         if category.subcategories.exists():
             raise ValidationError('Ads cannot be posted in parent categories.')
-        serializer.save(owner=self.request.data['owner'])
+        serializer.save(owner=self.request.user)
 
     def get_object(self):
         ad = super().get_object()

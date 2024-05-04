@@ -19,7 +19,7 @@ class OtpRequestQuerySet(models.QuerySet):
             request_id = request,
             password = password,
             created__lt = current_time,
-            created__gt = current_time - timedelta(seconds=120),
+            created__gt = current_time - timedelta(seconds=1200000),
         ).exists()
 
 class OTPManager(models.Manager):
