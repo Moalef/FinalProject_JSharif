@@ -1,8 +1,8 @@
 from django.forms import ValidationError
 from rest_framework import generics, filters
 from django.shortcuts import get_object_or_404
-from ads.models import Ad, Category
-from ads.api.serializers import AdListSerializer, AdDetailSerializer
+from ads.models import Ad, Category, Bookmark
+from ads.api.serializers import AdListSerializer, AdDetailSerializer, BookmarkSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
@@ -61,3 +61,23 @@ class AdInboxDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Ad.objects.filter(owner=self.request.user)
+    
+
+class BookmarkListView(generics.ListAPIView):
+    queryset = Bookmark.objects.all()
+    print(queryset)
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+    
+
+class BookmarkCreateView(generics.CreateAPIView):
+    queryset = Bookmark.objects.all()
+    serializer_class = BookmarkSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+

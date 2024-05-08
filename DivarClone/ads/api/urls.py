@@ -8,5 +8,7 @@ urlpatterns = [
     path('ad/<pk>/', views.AdDetailView.as_view(), name='ad_detail'),
     path('ads/inbox/', views.AdInboxView.as_view(), name='ad_inbox'),
     path('ads/inbox/<pk>/', views.AdInboxDetailView.as_view(), name='ad_inbox_detail'),
+    path('bookmarks/', views.BookmarkListView.as_view(), name='bookmark_list'),
+    path('bookmarks/create/', views.BookmarkCreateView.as_view(), name='bookmark_create'),
 
 ]

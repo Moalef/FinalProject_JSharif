@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ads.models import Ad, Category
+from ads.models import Ad, Category, Bookmark
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -21,3 +21,9 @@ class AdDetailSerializer(serializers.ModelSerializer):
         model = Ad
         # fields = ['title' , 'city', 'owner' , 'category' ,'description' , 'contact' , 'publish' , 'status']
         fields = ['title' , 'city' , 'category' ,'description' , 'contact' , 'publish' , 'status']
+
+
+class BookmarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bookmark
+        fields = ['id' , 'user' , 'ad']

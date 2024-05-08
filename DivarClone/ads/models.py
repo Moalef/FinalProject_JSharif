@@ -51,3 +51,11 @@ class Ad (models.Model):
     def __str__(self):
         return self.title
     
+
+
+class Bookmark(models.Model):
+    user = models.ForeignKey(User , on_delete= models.CASCADE)
+    ad = models.ForeignKey(Ad, on_delete= models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'ad')
