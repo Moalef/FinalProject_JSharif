@@ -26,4 +26,4 @@ class AdDetailSerializer(serializers.ModelSerializer):
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookmark
-        fields = ['id' , 'user' , 'ad']
+        fields = ['id' , 'ad']
